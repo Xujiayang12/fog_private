@@ -3,6 +3,9 @@ import numpy as np
 from date_processing import *
 from database_model import *
 import time
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 def get_data_one_dict(date_dict, type_name):
@@ -76,4 +79,4 @@ def type_before(text):
 
 
 if __name__ == '__main__':
-    print(get_by_time_delta_list('2014-1-1', 1000, ['pm25', 'o3', 'no2'], ['pm25_1','o3_1']))
+    print(get_by_time_delta_list('2015-1-1', 1100, ['pm25'], ['pm25_1', 'pm25_2', 'pm25_3', 'pm25_4', 'pm25_5']))

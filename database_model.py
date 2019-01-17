@@ -1,10 +1,17 @@
 from peewee import *
+import warnings
 
-db=SqliteDatabase('air.db')
+warnings.filterwarnings("ignore")
+
+db = SqliteDatabase('air.db')
 db.connect()
+
+
 class BaseModel(Model):
     class Meta:
-        database=db
+        database = db
+
+
 class Air(BaseModel):
     date = CharField()
     year = IntegerField()
@@ -18,5 +25,6 @@ class Air(BaseModel):
     co = FloatField()
     no2 = IntegerField()
     o3 = IntegerField()
+
     class Meta:
         db_table = 'air'
