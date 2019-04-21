@@ -6,7 +6,7 @@ from keras.optimizers import Adam
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pyecharts import Bar, Grid, Line
+# from pyecharts import Bar, Grid, Line
 import pylab
 from date_processing import *
 import plotly
@@ -93,42 +93,42 @@ class BP():
         plt.ylabel(self.label[0])
         plt.show()
 
-    def run_BP_by_echart(self):
-        # 建模
-        model = Sequential()  # 层次模型
-        model.add(Dense(len(self.feature),  # 此处为output_dim
-                        input_dim=len(self.feature)))  # 输入层，Dense表示BP层
-        model.add(Activation(self.act_fun))  # 添加激活函数
-        model.add(Dense(1, input_dim=self.h))  # 输出层
-        adam = Adam(lr=0.001)
-        model.compile(loss='mean_squared_error',
-                      optimizer=adam)  # 编译模型 交叉熵categorical_crossentropy 均方差mean_squared_error
-
-        # 开始训练
-        for step in range(self.train_time):
-            cost = model.train_on_batch(self.x_train, self.y_train)
-            if step % 2000 == 0: print("loss:", cost)
-
-        # 测试
-        self.test_loss = model.evaluate(self.x_test, self.y_test)
-        self.y_pre = model.predict(self.x_train)
-        self.y_test_pre = model.predict(self.x_test)
-        print("test_loss:", self.test_loss)
-
-        # echart
-
-        self.train_line = Line(self.label[0] + '训练集拟合效果图')
-        self.train_line.add('真实数值', to_reallist(self.time), tolist_to_reallist(self.y_train), mark_point=["max", "min"],
-                            mark_line=["average"])
-        self.train_line.add('拟合数值', to_reallist(self.time), tolist_to_reallist(self.y_pre))
-        self.train_line.render('output/train_line.html')
-
-        self.test_line = Line(self.label[0] + '测试集拟合效果图')
-        self.test_line.add('真实数值', to_reallist(self.time_pre), tolist_to_reallist(self.y_test), mark_point=["max", "min"],
-                           mark_line=["average"])
-        self.test_line.add('预测数值', to_reallist(self.time_pre), tolist_to_reallist(self.y_test_pre))
-        self.test_line.render('output/test_line.html')
-        print(self.time)
+    # def run_BP_by_echart(self):
+    #     # 建模
+    #     model = Sequential()  # 层次模型
+    #     model.add(Dense(len(self.feature),  # 此处为output_dim
+    #                     input_dim=len(self.feature)))  # 输入层，Dense表示BP层
+    #     model.add(Activation(self.act_fun))  # 添加激活函数
+    #     model.add(Dense(1, input_dim=self.h))  # 输出层
+    #     adam = Adam(lr=0.001)
+    #     model.compile(loss='mean_squared_error',
+    #                   optimizer=adam)  # 编译模型 交叉熵categorical_crossentropy 均方差mean_squared_error
+    #
+    #     # 开始训练
+    #     for step in range(self.train_time):
+    #         cost = model.train_on_batch(self.x_train, self.y_train)
+    #         if step % 2000 == 0: print("loss:", cost)
+    #
+    #     # 测试
+    #     self.test_loss = model.evaluate(self.x_test, self.y_test)
+    #     self.y_pre = model.predict(self.x_train)
+    #     self.y_test_pre = model.predict(self.x_test)
+    #     print("test_loss:", self.test_loss)
+    #
+    #     # echart
+    #
+    #     self.train_line = Line(self.label[0] + '训练集拟合效果图')
+    #     self.train_line.add('真实数值', to_reallist(self.time), tolist_to_reallist(self.y_train), mark_point=["max", "min"],
+    #                         mark_line=["average"])
+    #     self.train_line.add('拟合数值', to_reallist(self.time), tolist_to_reallist(self.y_pre))
+    #     self.train_line.render('output/train_line.html')
+    #
+    #     self.test_line = Line(self.label[0] + '测试集拟合效果图')
+    #     self.test_line.add('真实数值', to_reallist(self.time_pre), tolist_to_reallist(self.y_test), mark_point=["max", "min"],
+    #                        mark_line=["average"])
+    #     self.test_line.add('预测数值', to_reallist(self.time_pre), tolist_to_reallist(self.y_test_pre))
+    #     self.test_line.render('output/test_line.html')
+    #     print(self.time)
 
     def run_BP_by_plotly(self):
         # 建模
