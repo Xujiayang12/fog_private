@@ -2,6 +2,8 @@ import datetime
 import time
 import pandas as pd
 import numpy as np
+from scipy import stats
+import math
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -86,6 +88,7 @@ def get_std_and_var(pd_data, type_name):
     out['average'] = data.mean()
     out['std'] = data.std()
     out['std_square'] = data.var()
+    out['len'] = len(data)
 
     return out
 
@@ -93,10 +96,18 @@ def get_std_and_var(pd_data, type_name):
 def morkov_get_status_list(out_data):
     average = out_data['average']
     std = out_data['std']
-    d1 = average - 1.0 * std
-    d2 = average - 0.5 * std
-    d3 = average + 0.5 * std
-    d4 = average + 1.0 * std
+    len = out_data['len']
+
+    # d1 = average - 1.0 * std
+    # d2 = average - 0.5 * std
+    # d3 = average + 0.5 * std
+    # d4 = average + 1.0 * std
+    t_25 = stats.t.interval(0.025, len - 1, average, std)
+    a = (t_25[0] + t_25[1])/2
+    d1 = average - 2*a
+    d2 = t_25[0]
+    d3 = t_25[1]
+    d4 = average + 2*a
     d_list = [d1, d2, d3, d4]
     return d_list
 
@@ -318,9 +329,9 @@ def morkov_final(w_list, state_list, p_M, d_list):
 def get_error_list(reallist, prelist):
     real_list = pd.DataFrame(reallist)
     pre_list = pd.DataFrame(prelist)
-    error_list = (pre_list - real_list)/pre_list
+    error_list = (pre_list - real_list) / pre_list
     return error_list[0].tolist()
 
 
 if __name__ == '__main__':
-    print(get_after(2017, 1, 1, 3))
+ pass
