@@ -1,4 +1,5 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation
@@ -44,6 +45,7 @@ class BP_Morkov:
         self.y_train = self.data_train[self.label].values  # 标签数据
         self.x_test = self.data_test[self.feature].values  # 特征数据
         self.y_test = self.data_test[self.label].values  # 标签数据
+        self.date_test = self.data_test['date'].values  # 测试机的时间列表
         self.time = data['timestamp'].head(sample).values[:, np.newaxis]
         self.time_pre = data['timestamp'][sample:sample + test_set].values[:, np.newaxis]
         self.test_loss = 0
@@ -51,7 +53,6 @@ class BP_Morkov:
         self.y_test_pre = 0
         self.train_line = 0
         self.test_line = 0
-
 
     def run_show_by_plotly(self):
         # 建模
@@ -74,14 +75,11 @@ class BP_Morkov:
         self.y_pre = model.predict(self.x_train)
         self.y_test_pre = model.predict(self.x_test)
         print("test_loss:", self.test_loss)
+        print('时间:' + self.date_test)
 
         # k-means
 
         real_list = tolist_to_reallist(self.y_test)
         pre_list = tolist_to_reallist(self.y_test_pre)
-        error_list = get_error_list(real_list,pre_list)
 
         # print(error_list)
-
-
-
